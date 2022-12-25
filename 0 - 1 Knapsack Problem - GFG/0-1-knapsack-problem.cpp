@@ -24,8 +24,19 @@ class Solution
     
     int knapSack(int W, int wt[], int val[], int n) 
     { 
-        vector<vector<int>> dp(n , vector<int> (W+1,-1));
-       return solve(n-1 , W, wt , val , dp);
+        vector<vector<int>> dp(n , vector<int> (W+1,0));
+        // base case for tabulation Process
+        for(int w = wt[0] ; w <= W;w++) dp[0][w] = val[0];
+        
+        for(int ind =1 ;ind< n;ind++){
+            for(int w = 0;w <=W;w++){
+                int not_take = dp[ind-1][w];
+                int take = INT_MIN;
+                if(w >= wt[ind]) take = val[ind] + dp[ind-1][w-wt[ind]];
+                dp[ind][w] = max(not_take  ,take);
+            }
+        }
+       return dp[n-1][W];
     }
 };
 
