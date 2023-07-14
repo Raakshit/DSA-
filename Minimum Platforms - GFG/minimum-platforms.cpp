@@ -14,27 +14,22 @@ class Solution{
     {
     	sort(arr,arr+n);
     	sort(dep,dep+n);
-    	
-    	int i =1 ,j=0;
-    	int ans = 1 , platform =1;
-    	
+    	int count = 1 , plat_needed = 1;
+    	int i =1 , j =0 ;
     	while(i<n && j<n){
     	    if(arr[i] <= dep[j]){
-    	        platform++;
     	        i++;
-    	    }
-    	    else if(arr[i] > dep[j]){
-    	        platform--;
+    	        count ++;
+    	    }else{
     	        j++;
+    	        count--;
     	    }
     	    
-    	    if(platform > ans){
-    	        ans = platform;
-    	    }
+    	    plat_needed = max(plat_needed,count);
     	}
     	
-    	return ans;
-    	
+    	return plat_needed;
+    	 
     }
 };
 
