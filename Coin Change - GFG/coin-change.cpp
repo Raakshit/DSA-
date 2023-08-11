@@ -7,36 +7,27 @@ using namespace std;
 #define lli long long int
 class Solution {
   public:
-    long long int solve(int ind , int tar  , int coins[],vector<vector<lli>> &dp){
-        if(ind == 0  ){
-            return (tar%coins[0] == 0);
-           
+  
+    lli solve(int ind, int coins[] , int sum,vector<vector<lli>> &dp){
+        if(sum == 0) return 1;
+        if(ind == 0){
+            return (sum%coins[ind] == 0);
         }
-        if(dp[ind][tar] != -1) return dp[ind][tar];
-        lli not_take = solve(ind-1 , tar , coins,dp);
-        lli take  = 0;
-        if(tar >= coins[ind]) take = solve(ind , tar-coins[ind] , coins,dp);
         
-        return dp[ind][tar] =  (take+not_take);
+        if(dp[ind][sum] != -1) return dp[ind][sum];
+        
+        lli not_take = solve(ind-1,coins,sum,dp);
+        lli take =0;
+        if(sum >= coins[ind]){
+            take =solve(ind,coins,sum-coins[ind],dp);
+        }
+        
+        return dp[ind][sum] = take+not_take;
     }
-    long long int count(int coins[], int n, int sum) {
-        vector<vector<lli>> dp(n , vector<lli> (sum+1 , 0));
-        for(int t =0 ;t <= sum ;t++){
-            dp[0][t] = (t%coins[0] == 0);
-        }
-        
-        for(int ind =1;ind<n;ind++){
-            for(int t = 0;t<=sum;t++){
-                lli not_take = dp[ind-1][t];
-                lli take  = 0;
-                if(t >= coins[ind]) take = dp[ind][t - coins[ind]];
-            
-                dp[ind][t] =  (take+not_take);
-            }
-        }
-        
-        
-        return dp[n-1][sum];
+  
+    long long int count(int coins[], int N, int sum) {
+        vector<vector<lli>> dp(N+1,vector<lli>(sum+1,-1));
+        return solve(N-1,coins,sum,dp);
     }
 };
 
